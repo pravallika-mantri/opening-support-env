@@ -75,11 +75,3 @@ def run_episode():
 
 if __name__ == "__main__":
     run_episode()
-
-import time
-
-if __name__ == "__main__":
-    run_episode()
-
-    while True:
-        time.sleep(60)
