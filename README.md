@@ -8,44 +8,43 @@ sdk: docker
 pinned: false
 ---
 
+
 # OpenEnv Support Environment
 
 ## Overview
 
-This environment simulates real-world customer support workflows including:
-
-- Ticket classification
-- Response drafting
-- Issue resolution
-
+This environment simulates a customer support workflow including ticket classification, response generation, and issue resolution.
 
 ## Observation Space
 
-- ticket_id: int
-- message: str
-- status: str
+* ticket_id (int)
+* message (str)
+* status (str)
 
 ## Action Space
 
-- classify
-- reply
-- escalate
+* classify
+* reply
+* resolve
 
 ## Tasks
 
-1. Easy: classify_ticket
-2. Medium: draft_response
-3. Hard: resolve_ticket
+* Easy: classify_ticket
+* Medium: draft_response
+* Hard: resolve_ticket
+  
 
-## Reward Design
+## Output Format
 
-- Incremental rewards for:
-  - Correct classification
-  - Good response
-  - Full resolution
-- Penalties:
-  - Repeated actions
-  - Invalid actions
+```
+[START] ...
+[STEP] ...
+[END] ...
+```
+
+
+## Demo
+Click "Run Simulation" on Hugging Face Space to see execution output.
 
 ## Setup
 
