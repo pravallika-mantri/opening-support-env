@@ -1,9 +1,10 @@
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
 import subprocess
 
 app = FastAPI()
 
-@app.get("/")
+@app.get("/", response_class=PlainTextResponse)
 def run_env():
     result = subprocess.run(
         ["python", "inference.py"],
@@ -14,4 +15,4 @@ def run_env():
 
     output = result.stdout if result.stdout else result.stderr
 
-    return {"output": output}
+    return output
