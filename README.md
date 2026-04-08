@@ -1,7 +1,7 @@
 # OpenEnv Support Environment
 
 ---
-title: OpenEnv Support Env
+Title: OpenEnv Support Env
 emoji: 🚀
 colorFrom: blue
 colorTo: green
