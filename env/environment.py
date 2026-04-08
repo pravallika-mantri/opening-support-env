@@ -29,23 +29,19 @@ class SupportEnv:
         info = {"error": None}
 
 
-        if self.history and self.history[-1]["action_type"] == action.action_type:
+        if action.action_type == "classify":
+            if action.content == self.ticket["label"]:
+                reward += 0.4
+        else:
             reward -= 0.2
 
-
-        if action.action_type == "classify":
-            score = grade_classification(self.ticket["message"], action.content)
-            reward += score * 0.5
-
-
         elif action.action_type == "reply":
-            score = grade_response(action.content or "")
-            reward += score * 0.5
+            if "sorry" in (action.content or "").lower():
+                reward += 0.2
 
-
-        else:
-            reward -= 0.1
-            info["error"] = "Invalid action"
+        elif action.action_type == "resolve":
+            if "resolved" in (action.content or "").lower():
+            reward += 0.4
 
         self.history.append({
             "action_type": action.action_type,
