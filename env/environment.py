@@ -26,22 +26,22 @@ class SupportEnv:
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, dict]:
         reward = 0.0
-        info = {"error": None}
 
 
         if action.action_type == "classify":
-            if action.content == self.ticket["label"]:
-                reward += 0.4
-        else:
-            reward -= 0.2
+            reward += grade_classification(self.ticket["label"], action.content) * 0.4
+
 
         elif action.action_type == "reply":
-            if "sorry" in (action.content or "").lower():
-                reward += 0.2
+            reward += grade_response(action.content or "") * 0.3
+
 
         elif action.action_type == "resolve":
-            if "resolved" in (action.content or "").lower():
-            reward += 0.4
+            reward += grade_resolution(action.content or "") * 0.3
+
+
+        if self.history and self.history[-1]["action_type"] == action.action_type:
+            reward -= 0.3
 
         self.history.append({
             "action_type": action.action_type,
