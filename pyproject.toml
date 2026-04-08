@@ -1,0 +1,8 @@
+[project]
+name = "openenv-support-env"
+version = "0.1.0"
+description = "OpenEnv Support Environment"
+requires-python = ">=3.10"
+
+[tool.openenv]
+env_class = "env.environment:SupportEnv"
