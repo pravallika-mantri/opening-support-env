@@ -51,10 +51,8 @@ class SupportEnv:
         self.current_step += 1
 
 
-        if self.current_step >= 3:
-            final_score = grade_resolution(self.history)
-            reward += final_score * 0.5
-            self.done = True
+        if self.history and self.history[-1]["action_type"] == action.action_type:
+            reward -= 0.3
 
         return Observation(**self.ticket), round(reward, 2), self.done, info
 
