@@ -1,5 +1,14 @@
 # OpenEnv Support Environment
 
+---
+title: OpenEnv Support Env
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 ## Overview
 
 This environment simulates real-world customer support workflows including:
@@ -7,6 +16,7 @@ This environment simulates real-world customer support workflows including:
 - Ticket classification
 - Response drafting
 - Issue resolution
+
 
 ## Observation Space
 
