@@ -18,24 +18,21 @@ class SupportEnv:
         self.history = []
         self.ticket = random.choice(TICKETS)
 
-    return Observation(
-        ticket_id=self.ticket["id"],
-        message=self.ticket["message"],
-        status="open"
-    )
+        return Observation(
+            ticket_id=self.ticket["id"],
+            message=self.ticket["message"],
+            status="open"
+        )
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, dict]:
         reward = 0.0
         info = {"error": None}
 
-
         if action.action_type == "classify":
             reward += grade_classification(self.ticket["label"], action.content) * 0.4
 
-
         elif action.action_type == "reply":
             reward += grade_response(action.content or "") * 0.3
-
 
         elif action.action_type == "resolve":
             reward += grade_resolution(action.content or "") * 0.3
@@ -44,6 +41,7 @@ class SupportEnv:
             reward -= 0.1
             info["error"] = "Invalid action"
 
+        # Penalize repeated actions (loop)
         if self.history and self.history[-1]["action_type"] == action.action_type:
             reward -= 0.3
 
