@@ -1,43 +1,27 @@
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-import subprocess
+from env.environment import SupportEnv
 
 app = FastAPI()
 
-@app.get("/", response_class=HTMLResponse)
-def home():
-    return """
-    <html>
-    <body style="background:black;color:lime;font-family:monospace;padding:20px;">
-        <h2>OpenEnv Environment</h2>
-        <p>Click below to run the environment:</p>
-        <a href="/run" style="color:cyan;">Run Simulation</a>
-    </body>
-    </html>
-    """
+env = SupportEnv()
 
-@app.get("/run", response_class=HTMLResponse)
-def run_env():
-    try:
-        result = subprocess.run(
-            ["python", "inference.py"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            timeout=10   
-        )
+@app.post("/reset")
+def reset():
+    obs = env.reset()
+    return obs.dict()
 
-        output = result.stdout.strip() if result.stdout else result.stderr.strip()
+@app.post("/step")
+def step(action: dict):
+    from env.models import Action
+    action_obj = Action(**action)
+    obs, reward, done, info = env.step(action_obj)
+    return {
+        "observation": obs.dict(),
+        "reward": reward,
+        "done": done,
+        "info": info
+    }
 
-    except Exception as e:
-        output = str(e)
-
-    return f"""
-    <html>
-    <body style="background:black;color:lime;font-family:monospace;padding:20px;">
-        <h2>Execution Output</h2>
-        <pre>{output}</pre>
-        <br><a href="/">⬅ Back</a>
-    </body>
-    </html>
-    """
+@app.get("/state")
+def state():
+    return env.state()
