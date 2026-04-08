@@ -1,0 +1,11 @@
+name: support-env
+description: Real-world customer support simulation environment
+version: 1.0
+
+tasks:
+  - name: classify_ticket
+    difficulty: easy
+  - name: draft_response
+    difficulty: medium
+  - name: resolve_ticket
+    difficulty: hard
