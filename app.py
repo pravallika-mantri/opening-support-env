@@ -24,10 +24,10 @@ def run_env():
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            timeout=10   # prevent hanging
+            timeout=10   
         )
 
-        output = result.stdout if result.stdout else result.stderr
+        output = result.stdout.strip() if result.stdout else result.stderr.strip()
 
     except Exception as e:
         output = str(e)
