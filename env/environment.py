@@ -11,21 +11,22 @@ class SupportEnv:
         self.done = False
         self.ticket = None
         self.history: List[dict] = []
-        
+
     def reset(self):
         self.current_step = 0
         self.done = False
         self.history = []
         self.ticket = random.choice(TICKETS)
 
-    return Observation(
-        ticket_id=self.ticket["id"],
-        message=self.ticket["message"],
-        status="open"
-    )
+        return Observation(
+            ticket_id=self.ticket["id"],
+            message=self.ticket["message"],
+            status="open"
+        )
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, dict]:
         reward = 0.0
+        info = {"error": None}
 
 
         if action.action_type == "classify":
@@ -39,6 +40,9 @@ class SupportEnv:
         elif action.action_type == "resolve":
             reward += grade_resolution(action.content or "") * 0.3
 
+        else:
+            reward -= 0.1
+            info["error"] = "Invalid action"
 
         if self.history and self.history[-1]["action_type"] == action.action_type:
             reward -= 0.3
@@ -50,11 +54,14 @@ class SupportEnv:
 
         self.current_step += 1
 
+        if self.current_step >= 3:
+            self.done = True
 
-        if self.history and self.history[-1]["action_type"] == action.action_type:
-            reward -= 0.3
-
-        return Observation(**self.ticket), round(reward, 2), self.done, info
+        return Observation(
+            ticket_id=self.ticket["id"],
+            message=self.ticket["message"],
+            status="open"
+        ), round(reward, 2), self.done, info
 
     def state(self):
         return {
