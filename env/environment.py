@@ -13,16 +13,16 @@ class SupportEnv:
         self.history: List[dict] = []
 
     def reset(self):
-        self.current_step = 0
-        self.done = False
-        self.history = []
-        self.ticket = random.choice(TICKETS)
+    self.current_step = 0
+    self.done = False
+    self.history = []
+    self.ticket = random.choice(TICKETS)
 
-        return Observation(
-            ticket_id=self.ticket["id"],
-            message=self.ticket["message"],
-            status="open"
-        )
+    return Observation(
+        ticket_id=self.ticket["id"],
+        message=self.ticket["message"],
+        status="open"
+    )
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, dict]:
         reward = 0.0
