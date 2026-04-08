@@ -25,3 +25,7 @@ def run_env():
         </body>
     </html>
     """
+
+@app.get("/test")
+def test():
+    return {"status": "working"}
